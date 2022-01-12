@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>game</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+  <body>
+    <canvas id="first-canvas"></canvas>
+    <form id="display-form" class="hidden" method="post" action="/results">
+      <label for="username">名前:</label>
+      <input type="text" id="username" name="username" />
+      <input type="hidden" id="score" name="score" value="" />
+      <input type="submit" value="送信" />
+    </form>
+    <script src="/javascripts/script.js"></script>
+  </body>
+</html>

@@ -1,8 +1,29 @@
-body {
+/* body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
+} */
+/* a {
+  color: #00b7ff;
+} */
 
-a {
-  color: #00B7FF;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#first-canvas {
+  width: 800px;
+  height: 500px;
+  border: １px solid black;
+}
+.hidden {
+  display: none;
 }
