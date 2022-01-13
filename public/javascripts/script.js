@@ -3,8 +3,8 @@ window.addEventListener("load", function () {
   //canvasの設定
   const canvas = document.getElementById("first-canvas");
   const ctx = canvas.getContext("2d");
-  canvas.width = 800; //CSSと同じ値
-  canvas.height = 500; //CSSと同じ値
+  canvas.width = window.innerWidth; //CSSと同じ値
+  canvas.height = window.innerHeight; //CSSと同じ値
 
   //マウス処理
   //canvasの座標値（位置）を取得
@@ -40,12 +40,12 @@ window.addEventListener("load", function () {
       this.isGameOver = false; //ゲームオーバー
       this.gameOverSound = document.createElement("audio"); //ゲームオーバー音
       this.gameOverSound.src = "../sounds/game_over.mp3"; //ゲームオーバー音
-      this.displayForm = document.getElementById("display-form");
+      this.modal = document.getElementById("modal");
     }
     update(deltaTime) {
       //isDeletable(削除可能か)がfalseのものだけにする。
       this.donuts = this.donuts.filter((donut) => !donut.isDeletable);
-      // 次のドーナッツ作成までの累積時間　> ドーナッツを作成する間隔
+      // 次のドーナッツ作成までの累積時間 > ドーナッツを作成する間隔
       if (this.donutTimer > this.donutInterval) {
         this.donuts.push(new Donut(this, this.player)); //ドーナッツ作成
         this.donutTimer = 0; //次のドーナッツ作成までの累積時間をリセット
@@ -271,7 +271,7 @@ window.addEventListener("load", function () {
       game.drawGameOver(); //ゲームオーバー画面描写
       game.gameOverSound.play(); //ゲームオーバー音
       game.inputScore.value = game.score;
-      game.displayForm.classList.remove("hidden");
+      game.modal.classList.remove("hidden");
     }
   }
   //引数に何も入れないと最初がundefinedでNaNになってしまう

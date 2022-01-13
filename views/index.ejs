@@ -3,14 +3,47 @@
   <head>
     <title><%= title %></title>
     <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      ,
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      ,
+      crossorigin="anonymous"
+    />
   </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-    <% results.forEach(function(result,key){ %>
-    <p><%= key+1 %>: <%= result.score %> <%= result.username %></p>
-    <% }); %>
+  <body class="container bg-light">
+    <h1 class="text-center m-5 text-white"><%= title %></h1>
 
-    <a href="game">スタート</a>
+    <table class="table table-bordered table-dark w-50 m-auto">
+      <thead>
+        <tr>
+          <th scope="col" style="width: 5%" class="text-center">No</th>
+          <th scope="col" style="width: 75%" class="text-center">名前</th>
+          <th scope="col" style="width: 20%" class="text-center">スコア</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% results.forEach(function(result,key){ %>
+        <tr>
+          <th scope="row"><%= key+1 %></th>
+          <td><%= result.username %></td>
+          <td class="text-right"><%= result.score %></td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+
+    <div class="text-center">
+      <a href="game" class="btn btn-danger m-5 w-25">スタート</a>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      ,
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      ,
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>

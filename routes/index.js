@@ -6,7 +6,7 @@ const Result = require("../models/result");
 router.get("/", function (req, res, next) {
   Result.findAll({ order: [["score", "DESC"]], limit: 5 }).then((results) => {
     res.render("index", {
-      title: "Donut Catch",
+      title: "ドーナッツ・キャッチ",
       results: results,
       // username: results.username,
       // score: results.score,
