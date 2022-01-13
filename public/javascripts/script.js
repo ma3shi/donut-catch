@@ -3,12 +3,11 @@ window.addEventListener("load", function () {
   //canvasの設定
   const canvas = document.getElementById("first-canvas");
   const ctx = canvas.getContext("2d");
-  canvas.width = window.innerWidth; //CSSと同じ値
-  canvas.height = window.innerHeight; //CSSと同じ値
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
 
   //マウス処理
-  //canvasの座標値（位置）を取得
-  let canvasPosition = canvas.getBoundingClientRect();
+  let canvasPosition = canvas.getBoundingClientRect(); //canvasの座標値（位置）を取得
   const mouse = {
     x: canvas.width / 2, //初期値
     y: canvas.height / 2, //初期値
@@ -40,8 +39,9 @@ window.addEventListener("load", function () {
       this.isGameOver = false; //ゲームオーバー
       this.gameOverSound = document.createElement("audio"); //ゲームオーバー音
       this.gameOverSound.src = "../sounds/game_over.mp3"; //ゲームオーバー音
-      this.modal = document.getElementById("modal");
+      this.modal = document.getElementById("modal"); //モーダルウインドウ
     }
+    //アップデート
     update(deltaTime) {
       //isDeletable(削除可能か)がfalseのものだけにする。
       this.donuts = this.donuts.filter((donut) => !donut.isDeletable);
@@ -50,12 +50,13 @@ window.addEventListener("load", function () {
         this.donuts.push(new Donut(this, this.player)); //ドーナッツ作成
         this.donutTimer = 0; //次のドーナッツ作成までの累積時間をリセット
       } else {
-        this.donutTimer += deltaTime;
+        this.donutTimer += deltaTime; //次のドーナッツ作成までの累積時間にframe間のミリ秒を加える
       }
       this.background.update(); //背景更新
       this.player.update(); //プレイヤー更新
       this.donuts.forEach((donut) => donut.update()); //ドーナッツ更新
     }
+    //描画
     draw() {
       this.background.draw(); //背景描画
       this.player.draw(); //プレイヤー描画
@@ -87,6 +88,7 @@ window.addEventListener("load", function () {
       this.height = canvas.height;
       this.speed = 2;
     }
+    //アップデート
     update() {
       if (this.x <= -this.width) this.x = 0; //背景の幅分,移動したら元の位置に戻る
       this.x = this.x - this.speed; //左に移動
@@ -118,22 +120,24 @@ window.addEventListener("load", function () {
       this.imgWidth = 749; //imgの幅
       this.imgHeight = 800; //imgの高さ
     }
+    //アップデート
     update() {
       //初期値:this.x/2はcanvasの幅/2,mouse.xはcanvas.width / 2,なので初期のdxは0
-      const dx = this.x - mouse.x;
+      const distanceX = this.x - mouse.x;
       //初期値:this.yはcanvas.height,mouse.yはcanvas.height / 2なのでdy=canvasの高さ/2
-      const dy = this.y - mouse.y;
+      const distanceY = this.y - mouse.y;
       //dxがプラスになるのはmouseが左,playerが右,dyがプラスになるのはmouseが上,playerが下
       //thetaを計算する際にはplayerに対してmouseが
       // 1.左上　dx:+, dy:+, 2.右上　dx:-, dy:+, 3.左下　dx:+, dy:- ,4.右下　dx:-, dy:-
       //https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Math/atan2
       //上記の解説の図とマウス位置は左右逆になるので注意.シータ角は反時計回り。ctx.rotateはx軸の右側がスタートで時計回り。
-      let theta = Math.atan2(dy, dx);
+      let theta = Math.atan2(distanceY, distanceX);
       this.angle = theta;
       //クリックした位置とplayerの位置が異なる場合。 dxがプラス,左に移動,dxマイナスは右移動。
-      if (mouse.x != this.x) this.x -= dx / 15;
-      if (mouse.y != this.y) this.y -= dy / 15;
+      if (mouse.x != this.x) this.x -= distanceX / 15;
+      if (mouse.y != this.y) this.y -= distanceY / 15;
     }
+    //描画
     draw() {
       // if (mouse.isClicked) {
       //   ctx.lineWidth = 0.2;
@@ -159,7 +163,7 @@ window.addEventListener("load", function () {
           0, //sy
           this.imgWidth, //sw
           this.imgHeight, //sh
-          0 - 60, //dx  ctx.translateで中心に移動している。60は画像とarcの位置調整
+          0 - 60, //dx  ctx.translateで移動している。60は画像とarcの位置調整
           0 - 60, //dy 45は画像とarcの位置調整
           this.imgWidth / 7, //表示幅
           this.imgHeight / 7 //表示高さ
@@ -199,13 +203,14 @@ window.addEventListener("load", function () {
       this.y =
         Math.random() * (canvas.height - this.radius - 50) + this.radius + 50;
       this.directionX = Math.random() * 5 + 1; //方向(x)
-      this.directionY = Math.random() * 5 - 2.5; //方向(y)
+      this.directionY = Math.random() * 5 - 2.5; //方向(y) -2.5から2.5の間
       this.distance; //playerとの距離
       this.isCounted = false; //スコアをカウントしたかどうか
       this.isDeletable = false; //削除可能か
       this.catchSound = document.createElement("audio"); //キャッチ音
       this.catchSound.src = "../sounds/catch_sound.mp3"; //キャッチ音
     }
+    //アップデート
     update() {
       //上下の端で逆方向へ
       if (this.y - this.radius < 0 || this.y + this.radius > canvas.height) {
@@ -216,10 +221,10 @@ window.addEventListener("load", function () {
       this.y += this.directionY; //上下ランダム
 
       //削除
-      const dx = this.x - this.player.x; //donutとplayerのx軸の差
-      const dy = this.y - this.player.y; //donutとplayerのy軸の差
+      const distanceX = this.x - this.player.x; //donutとplayerのx軸の差
+      const distanceY = this.y - this.player.y; //donutとplayerのy軸の差
       //this.distanceは斜辺
-      this.distance = Math.sqrt(dx * dx + dy * dy); //donutとplayerの距離を計算
+      this.distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY); //donutとplayerの距離を計算
       //ドーナッツとプレイヤーの距離　< ドーナッツとプレイヤーの半径の合計
       if (this.distance < this.radius + this.player.radius) {
         //カウントがまだの場合
@@ -233,6 +238,7 @@ window.addEventListener("load", function () {
       //ドーナッツが左端に到達して隠れたらゲームオーバー
       if (this.x < 0 - this.radius) this.game.isGameOver = true;
     }
+    //描画
     draw() {
       // ctx.fillStyle = "blue";
       // ctx.beginPath();
@@ -270,8 +276,8 @@ window.addEventListener("load", function () {
     } else {
       game.drawGameOver(); //ゲームオーバー画面描写
       game.gameOverSound.play(); //ゲームオーバー音
-      game.inputScore.value = game.score;
-      game.modal.classList.remove("hidden");
+      game.inputScore.value = game.score; //スコアをファーム内に代入
+      game.modal.classList.remove("hidden"); //モーダルウィンドウ表示
     }
   }
   //引数に何も入れないと最初がundefinedでNaNになってしまう
